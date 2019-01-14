@@ -1,28 +1,20 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+/**
+ * Created by user on 2019/1/14.跟组件
+ */
+import React from 'react'
+import {Switch,BrowserRouter,Route} from 'react-router-dom'
+import Admin from './pages/admin/admin'
+import Login from './pages/login/login'
+//应用跟组件
+export default class App extends React.Component{
+    render(){
+        return (
+            <BrowserRouter>
+                <Switch>
+                    <Route path='/admin' component={Admin}></Route>
+                    <Route path='/' component={Login}></Route>
+                </Switch>
+            </BrowserRouter>
+        )
+    }
 }
-
-export default App;
