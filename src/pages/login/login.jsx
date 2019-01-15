@@ -2,21 +2,62 @@ import React, {Component} from 'react'
 import {Form,Button,Input,Icon} from 'antd'
 import logo from '../../assets/images/logo.png'
 import './index.less'
+import {reLogin} from '../../api'
+import PropTypes from 'prop-types'
+import storageUtils from '../../utils/storageUtils'
+import MemoryUtils from '../../utils/MemoryUtils'
 export default class Login extends Component {
+    state={
+        errorMsg:''
+    }
+    login= async(username,password)=>{
+
+        const result = await reLogin(username,password)
+        if(result.status===0){
+            const user = result.data
+            storageUtils.saveUser(user)
+            MemoryUtils.user=user
+            this.props.history.replace('/')
+        }else{
+            this.setState({
+                errorMsg: result.msg
+            })
+            console.log(result);
+
+        }
+    }
 
     render() {
+        const {errorMsg}=this.state
         return (
             <div className="login">
                 <div className="login-header">
                     <img src={logo}></img>
                     React项目: 后台管理系统
                 </div>
-                <LoginForm></LoginForm>
+
+                    <div className="login-content">
+                        <div className="login-box">
+
+                            <div class="error-msg-wrap">
+                                <div className={errorMsg ? "show" : ""}>
+                                    {errorMsg}
+                                </div>
+
+                            </div>
+                            <div className="title">用户登陆</div>
+                            <LoginForm login={this.login}> </LoginForm>
+                        </div>
+                    </div>
+
             </div>
         )
     }
 }
 class LoginForm extends React.Component{
+    static propTypes = {
+        login: PropTypes.func.isRequired
+    }
     uesrRule=(ruler,value,callback)=>{
         if(!value){
             callback('请输入用户名')
@@ -30,21 +71,24 @@ class LoginForm extends React.Component{
     }
     Submitadmin=(e)=>{
         e.preventDefault()
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async(err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                const {username,password}=values
+                this.props.login(username,password)
             }
         });
     }
     render(){
         const { getFieldDecorator } = this.props.form;
+
         return (
-            <div className="login-content">
-            <div className="login-box">
-                <div className="title">用户登陆</div>
+            <div>
                 <Form.Item>
-                    {getFieldDecorator('userName', {
-                        rules: [{validator:this.uesrRule}],
+                    {getFieldDecorator('username', {
+                        initialValue: 'admin',
+                        rules: [{validator:this.uesrRule }
+                            ],
                     })(
                         <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
                     )}
@@ -55,7 +99,7 @@ class LoginForm extends React.Component{
                             type: 'string',
                             required: true,
                             whitespace: true,
-                            message: '请输入密码!!!'
+                            message: '请输入密码!!!!'
                         },
                             {
                                 min: 4,
@@ -69,9 +113,8 @@ class LoginForm extends React.Component{
                 </Form.Item>
                 <div className="login-form">
                     <Button type="primary" className="login-form-button" onClick={this.Submitadmin}>登陆</Button>
-                </div>
-            </div>
         </div>
+            </div>
         )
 
     }
