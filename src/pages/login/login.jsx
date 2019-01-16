@@ -39,7 +39,7 @@ export default class Login extends Component {
                     <div className="login-content">
                         <div className="login-box">
 
-                            <div class="error-msg-wrap">
+                            <div className="error-msg-wrap">
                                 <div className={errorMsg ? "show" : ""}>
                                     {errorMsg}
                                 </div>
