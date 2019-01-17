@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {NavLink,withRouter} from 'react-router-dom'
+import {NavLink,withRouter,Redirect} from 'react-router-dom'
 import {Menu, Icon,} from 'antd'
 import './left-nav.less'
 import image from '../../assets/images/QQ.png'
@@ -15,6 +15,7 @@ class LeftNav extends Component {
                 const subMenu =(
                     <SubMenu key={item.key} title={<span><Icon type={item.icon}/><span>{item.title}</span></span>}>
                         {
+
                             this.getMenuNodes(item.children)
                         }
                     </SubMenu>
@@ -22,11 +23,11 @@ class LeftNav extends Component {
                 pre.push(subMenu)
             }else {
                 const menuItem =(
-                    <Menu.Item key={item.key}>
+                    <Item key={item.key}>
                         <NavLink to={item.key}>
                             <Icon type={item.icon}/>{item.title}
                         </NavLink>
-                    </Menu.Item>
+                    </Item>
                 )
                 pre.push(menuItem)
             }
@@ -34,19 +35,25 @@ class LeftNav extends Component {
         },[])
     }
 
+
     componentWillMount(){
         this.menuNodes =this.getMenuNodes(menuList)
     }
-
     render() {
         const path = this.props.location.pathname
+        const openpath =path.substring(path.indexOf("/",path.indexOf("/")+1) ,path.indexOf("."))
         return (
             <div className="left-nav">
                 <NavLink to="/home" className="logo">
                 <img src={image} alt="logo" />
                 <h1>公司后台</h1>
                 </NavLink>
-                <Menu mode="inline" theme="dark" defaultSelectedKeys={[path]}>
+                <Menu
+                    mode="inline"
+                    theme="dark"
+                    defaultSelectedKeys={[path]}
+                    defaultOpenKeys={[openpath]}
+                >
                     {this.menuNodes}
                 </Menu>
             </div>

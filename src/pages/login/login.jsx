@@ -70,15 +70,25 @@ class LoginForm extends React.Component{
         }
     }
     Submitadmin=(e)=>{
-        e.preventDefault()
-        this.props.form.validateFields(async(err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                const {username,password}=values
-                this.props.login(username,password)
-            }
-        });
+        if(e.keyCode === 13){
+            e.preventDefault()
+            this.props.form.validateFields(async(err, values) => {
+                if (!err) {
+                    console.log('Received values of form: ', values);
+                    const {username,password}=values
+                    this.props.login(username,password)
+                }
+            });
+        }
+
     }
+    componentDidMount(){
+        document.addEventListener("keydown",this.Submitadmin);
+    }
+    componentWillUmount(){
+        document.removeEventListener("keydown",this.Submitadmin);
+    }
+
     render(){
         const { getFieldDecorator } = this.props.form;
 

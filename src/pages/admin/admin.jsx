@@ -33,8 +33,8 @@ export default class Admin extends Component {
                     <div className='content'>
                     <Switch>
                         <Route path='/home' component={Home}></Route>
-                        <Route path='/category' component={Category}></Route>
-                        <Route path='/product' component={Product}></Route>
+                        <Route path='/commodity/category' component={Category}></Route>
+                        <Route path='/commodity/product' component={Product}></Route>
                         <Route path='/role' component={Role}></Route>
                         <Route path='/user' component={User}></Route>
                         <Route path='/charts/bar' component={Bar}></Route>
