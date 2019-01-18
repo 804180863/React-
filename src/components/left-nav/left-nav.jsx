@@ -21,6 +21,11 @@ class LeftNav extends Component {
                     </SubMenu>
                 )
                 pre.push(subMenu)
+                const path =this.props.location.pathname
+                const cItem=item.children.find((child=>child.key===path))
+                if(cItem){
+                    this.OpenKEY=item.key
+                }
             }else {
                 const menuItem =(
                     <Item key={item.key}>
@@ -41,7 +46,7 @@ class LeftNav extends Component {
     }
     render() {
         const path = this.props.location.pathname
-        const openpath =path.substring(path.indexOf("/",path.indexOf("/")+1) ,path.indexOf("."))
+        // const openpath =path.substring(path.indexOf("/",path.indexOf("/")+1) ,path.indexOf("."))
         return (
             <div className="left-nav">
                 <NavLink to="/home" className="logo">
@@ -52,7 +57,7 @@ class LeftNav extends Component {
                     mode="inline"
                     theme="dark"
                     defaultSelectedKeys={[path]}
-                    defaultOpenKeys={[openpath]}
+                    defaultOpenKeys={[this.OpenKEY]}
                 >
                     {this.menuNodes}
                 </Menu>

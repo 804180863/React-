@@ -11,7 +11,7 @@ export const reqAddUser = (user) => ajax('/manage/user/add', user, 'POST')
 //获取一级二级分类接口
 export const reqCategorys =(parentId)=> ajax('/manage/category/list',{parentId})
 //获取添加分类接口
-export const reqAddCategorys =(parentId,categoryName)=> ajax('/manage/cetegory/add',{parentId,categoryName},'POST')
+export const reqAddCategory = (parentId, categoryName) => ajax('/manage/category/add', {parentId, categoryName}, 'POST')
 //获取更新分类接口
 export const reqUpdateCategorys =({categoryId,categoryName})=> ajax('/manage/cetegory/update',{categoryId,categoryName},'POST')
 
