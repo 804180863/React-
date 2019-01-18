@@ -27,7 +27,7 @@ class Header extends Component {
                 title=menu.title
             }else if(menu.children){
                 menu.children.forEach(item=>{
-                    if(item.key===path){
+                    if(path.indexOf(item.key)=== 0){  // as
                         title=item.title
                     }
                 })
@@ -44,15 +44,14 @@ class Header extends Component {
     }
     headerexit=()=>{
         Modal.confirm({
-            content: '你确定要离开我们的单博士?',
+            content: '您确定退出吗?',
             onOk: () => {
-                console.log('OK')
                 StorageUtils.removeUser()
                 MemoryUtils.user = {}
                 this.props.history.replace('/login')
             },
             onCancel() {
-                console.log('cancel');
+
             },
         })
     }
@@ -67,7 +66,7 @@ class Header extends Component {
 
         const {sysTime,dayPictureUrl,weather}=this.state
         const user=MemoryUtils.user
-        const path=this.props.location.pathname
+        const path =  this.props.location.pathname
         const title=this.getMenuConfig(path)
 
         return (

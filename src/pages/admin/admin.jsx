@@ -42,10 +42,13 @@ export default class Admin extends Component {
                         <Route path='/charts/pie' component={Pie}></Route>
                         <Redirect to="/home"/>
                     </Switch>
-                    </div>
                     <Footer/>
+                    </div>
+
                 </Col>
+
             </Row>
+
         )
     }
 }
