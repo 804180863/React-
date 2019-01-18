@@ -13,7 +13,7 @@ export const reqCategorys =(parentId)=> ajax('/manage/category/list',{parentId})
 //获取添加分类接口
 export const reqAddCategory = (parentId, categoryName) => ajax('/manage/category/add', {parentId, categoryName}, 'POST')
 //获取更新分类接口
-export const reqUpdateCategorys =({categoryId,categoryName})=> ajax('/manage/cetegory/update',{categoryId,categoryName},'POST')
+export const reqUpdateCategorys =({categoryId,categoryName})=> ajax('/manage/category/update',{categoryId,categoryName},'POST')
 
 
 

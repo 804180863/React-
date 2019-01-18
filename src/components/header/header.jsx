@@ -44,15 +44,14 @@ class Header extends Component {
     }
     headerexit=()=>{
         Modal.confirm({
-            content: '你确定要离开我们的单博士?',
+            content: '您确定退出吗?',
             onOk: () => {
-                console.log('OK')
                 StorageUtils.removeUser()
                 MemoryUtils.user = {}
                 this.props.history.replace('/login')
             },
             onCancel() {
-                console.log('cancel');
+
             },
         })
     }
