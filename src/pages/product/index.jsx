@@ -74,7 +74,7 @@ export default class Index extends Component {
                     <Option key="productDesc" value="productDesc">按描述搜索</Option>
                 </Select>
                 <Input style={{width:250 ,marginLeft:15, marginRight:15}} onChange={(e)=>this.setState({searchName:e.target.value})}/>
-                <Button type="primary" onClick={()=>this.getProducts(1)}>搜索</Button>
+                <Button type="primary" onClick={()=>this.getProducts(1)}>搜索结果</Button>
                 <Button type="primary" style={{float:'right'}}><Icon type="plus"/>添加产品</Button>
             </Card>
                 <Table
