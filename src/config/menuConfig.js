@@ -9,17 +9,17 @@ const menuList = [
     },
     {
         title: '商品',
-        key: '/products',
+        key: '/commodity',
         icon: 'appstore',
         children: [ // 子菜单列表
             {
                 title: '品类管理',
-                key: '/category',
+                key: '/commodity/category',
                 icon: 'bars'
             },
             {
                 title: '商品管理',
-                key: '/product',
+                key: '/commodity/product',
                 icon: 'tool'
             },
         ]

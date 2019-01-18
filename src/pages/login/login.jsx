@@ -39,7 +39,7 @@ export default class Login extends Component {
                     <div className="login-content">
                         <div className="login-box">
 
-                            <div class="error-msg-wrap">
+                            <div className="error-msg-wrap">
                                 <div className={errorMsg ? "show" : ""}>
                                     {errorMsg}
                                 </div>
@@ -70,15 +70,25 @@ class LoginForm extends React.Component{
         }
     }
     Submitadmin=(e)=>{
-        e.preventDefault()
-        this.props.form.validateFields(async(err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                const {username,password}=values
-                this.props.login(username,password)
-            }
-        });
+        if(e.keyCode === 13){
+            e.preventDefault()
+            this.props.form.validateFields(async(err, values) => {
+                if (!err) {
+                    console.log('Received values of form: ', values);
+                    const {username,password}=values
+                    this.props.login(username,password)
+                }
+            });
+        }
+
     }
+    componentDidMount(){
+        document.addEventListener("keydown",this.Submitadmin);
+    }
+    componentWillUmount(){
+        document.removeEventListener("keydown",this.Submitadmin);
+    }
+
     render(){
         const { getFieldDecorator } = this.props.form;
 
