@@ -27,7 +27,7 @@ class Header extends Component {
                 title=menu.title
             }else if(menu.children){
                 menu.children.forEach(item=>{
-                    if(item.key===path){
+                    if(path.indexOf(item.key)=== 0){  // as
                         title=item.title
                     }
                 })
@@ -66,7 +66,7 @@ class Header extends Component {
 
         const {sysTime,dayPictureUrl,weather}=this.state
         const user=MemoryUtils.user
-        const path=this.props.location.pathname
+        const path =  this.props.location.pathname
         const title=this.getMenuConfig(path)
 
         return (

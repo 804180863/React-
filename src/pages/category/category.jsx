@@ -7,7 +7,10 @@ const Item =Form.Item
 export default class Category extends Component {
     //设置状态
     state={
+        parentId:'0',
+        parentName:'',
         catetorys:[],
+        subCategory:[],
         isShowAdd:false,
         showupdateclass:false,
         catetorysName:[]
@@ -20,10 +23,12 @@ export default class Category extends Component {
         })
     }
     updatehandleOk= async()=>{
+
         const categoryId =this.category._id
         const {categoryName} = this.form.getFieldsValue()
+        this.form.resetFields()
         const result =  await reqUpdateCategorys({categoryId,categoryName})
-        console.log(categoryId,categoryName);
+
         if(result.status === 0){
             message.success('修改成功')
         }
@@ -32,16 +37,35 @@ export default class Category extends Component {
             showupdateclass:false
         })
     }
+
     //获取数据
-    getCategorys = async()=>{
-        const result = await reqCategorys('0')
+    getCategorys = async(pId)=>{
+        const parentId = pId || this.state.parentId
+        const result = await reqCategorys(parentId)
         if(result.status===0){
             const catetorys =result.data
-            this.setState({
-                catetorys
-            })
+            if(parentId === '0'){
+                this.setState({
+                    catetorys
+                })
+            }else{
+                this.setState({
+                    subCategory:catetorys
+                })
+            }
+
         }
     }
+    //查看二级分类数据
+    SeeClassSonName=(category)=>{
+        this.setState({
+            parentName:category.name,
+            parentId:category._id
+        },()=>{
+            this.getCategorys()
+        })
+    }
+
     //初始渲染数据
     componentDidMount(){
         this.getCategorys()
@@ -60,7 +84,8 @@ export default class Category extends Component {
                     <span>
                         &nbsp;&nbsp;<a href="javascript:" onClick={()=> this.updateclass(category)}>修改分类名</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="javascript:">查看子分类</a>
+                        {this.state.parentId === '0' ? <a href="javascript:" onClick={()=> this.SeeClassSonName(category)}>查看子分类</a>: ''}
+
                     </span>
                 )
             }
@@ -83,7 +108,10 @@ export default class Category extends Component {
         if(result.status===0){
             message.success('添加成功')
         }
-        this.getCategorys()
+        if(parentId===this.state.parentId || parentId==='0' ){
+            this.getCategorys(parentId)
+        }
+
     }
     //关闭添加页面
     handleCancel= () => {
@@ -91,24 +119,41 @@ export default class Category extends Component {
             isShowAdd: false,
         });
     }
+    //显示一级分类
+    showoneRclass =()=>{
+        this.setState({
+            parentId:'0',
+            parentName:'',
+            subCategory:[]
+        })
+    }
     render() {
         const columns =this.columns
 
-        const {catetorys,isShowAdd,showupdateclass} =this.state
+        const {catetorys,isShowAdd,showupdateclass,parentId,parentName,subCategory} =this.state
 
         const category= this.category ||{}
         return (
             <div>
                 <Card>
-                    <span style={{fontSize:18}}>一级分类列表</span>
+                    {
+                        parentId === '0' ?
+                            <span style={{fontSize:18}}>一级分类列表</span>:
+                            <span style={{fontSize:18}}> <a href="javascript:" onClick={this.showoneRclass}>一级分类列表</a>
+                                <Icon type="arrow-right" /> {parentName}</span>
+
+                    }
+
+
+
                     <Button onClick={this.showModal} type="primary" style={{float:'right'}}><Icon type="plus-circle"/>添加品类</Button>
                 </Card>
                 <Table
                     bordered
                     rowKey="_id"
                     columns={columns}
-                    dataSource={catetorys}
-                    loading={!catetorys||catetorys.length===0}
+                    dataSource={parentId=== '0' ? catetorys : subCategory}
+                    loading={catetorys.length===0}
                     pagination={{defaultPageSize:10 ,showSizeChanger:true ,showQuickJumper:true}}
                 />
                 <Modal
@@ -127,7 +172,7 @@ export default class Category extends Component {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
-                    <AddForm catetorys={catetorys} setForm={(form)=> this.form =form }/>
+                    <AddForm catetorys={catetorys} parentId={parentId} setForm={(form)=> this.form =form }/>
                 </Modal>
 
 
@@ -177,13 +222,13 @@ class AddForm extends Component{
     }
     render(){
         const {getFieldDecorator} =this.props.form
-        const {catetorys} =this.props
+        const {catetorys,parentId} =this.props
         return(
             <Form>
                 <Item label="所属分类">
                     {
                         getFieldDecorator('parentId',{
-                            initialValue:'0'
+                            initialValue: parentId
                         })(
                             <Select>
                             <Option key='0' value='0'>一级分类</Option>
