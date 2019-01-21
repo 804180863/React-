@@ -36,7 +36,7 @@ export default class Index extends Component {
                     <span>
                     <a href="javascript:">详情</a>
                         &nbsp;&nbsp;&nbsp;
-                    <a href="javascript:">修改</a>
+                    <a href="javascript:" onClick={()=>this.props.history.push('/commodity/product/saveupdata',product)}>修改</a>
                     </span>
             )
         }
@@ -46,12 +46,13 @@ export default class Index extends Component {
         this.initColums()
     }
     getProducts= async (pageNum)=>{
+
         const {searchType,searchName} =this.state
         let result
         if(searchName){
             result = await reqSeachProducts({pageNum,pageSize:3 ,searchType,searchName})
         }else{
-            result = await reqProducts(pageNum,3)
+                result = await reqProducts(pageNum,3)
         }
         if(result.status===0){
             const {total,list}=result.data
@@ -74,8 +75,8 @@ export default class Index extends Component {
                     <Option key="productDesc" value="productDesc">按描述搜索</Option>
                 </Select>
                 <Input style={{width:250 ,marginLeft:15, marginRight:15}} onChange={(e)=>this.setState({searchName:e.target.value})}/>
-                <Button type="primary" onClick={()=>this.getProducts(1)}>搜索结果</Button>
-                <Button type="primary" style={{float:'right'}}><Icon type="plus"/>添加产品</Button>
+                <Button type="primary" onClick={()=>this.getProducts(1)}>搜索</Button>
+                <Button type="primary" onClick={()=>this.props.history.push('/commodity/product/saveupdata')} style={{float:'right'}}><Icon type="plus"/>添加产品</Button>
             </Card>
                 <Table
                     bordered

@@ -3,6 +3,7 @@ import {Switch,Route,Redirect} from 'react-router-dom'
 import Detail from './detail'
 import Index from './index'
 import Saveupdata from './save-updata'
+import './product.less'
 export default class Product extends Component {
     render() {
         return (

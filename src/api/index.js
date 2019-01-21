@@ -22,9 +22,10 @@ export const reqSeachProducts = ({pageNum, pageSize,searchType,searchName})=>aja
     pageSize,
     [searchType]:searchName
 })
-
-
-
+//删除图片
+export const reqDeleteImg =(name)=> ajax('/manage/img/delete',{name},'post')
+//添加图片接口
+export const reqAddUpdateCategory=(product)=>ajax('/manage/product/' +(product._id ? 'update' : 'add'),product,'POST')
 //天气接口
 export function getWeather(city) {
     return new Promise((resolve,reject)=>{
